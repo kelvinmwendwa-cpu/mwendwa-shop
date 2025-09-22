@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Customer Care – Mwendwa’s Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" class="brand">Mwendwa’s Shop</a>
+    <div class="links">
+      <a href="products.html">Products</a>
+      <a href="cart.html">Cart <span id="cart-badge">0</span></a>
+      <a href="register.html">Register</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="customercare.html">Customer Care</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2>Need Help? We're Here for You</h2>
+    <p>If you have any questions about your order, delivery, or payments, feel free to reach out.</p>
+
+    <section style="margin-top: 30px;">
+      <h3>Contact Us</h3>
+      <form onsubmit="submitInquiry(event)">
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" name="fullname" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="message">Your Message</label>
+          <textarea id="message" name="message" rows="4" placeholder="Type your question or issue here..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </section>
+
+    <section style="margin-top: 40px;">
+      <h3>Quick Support</h3>
+      <ul>
+        <li>📞 WhatsApp: <a href="https://wa.me/254712345678" target="_blank">+254 712 345 678</a></li>
+        <li>📧 Email: <a href="mailto:support@mwendwashop.co.ke">support@mwendwashop.co.ke</a></li>
+        <li>⏰ Hours: Monday–Saturday, 8am–6pm</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Mwendwa’s Shop</small>
+  </footer>
+
+  <script type="module">
+    import { updateCartBadge } from './assets/js/cart.js';
+    updateCartBadge();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    window.submitInquiry = function (e) {
+      e.preventDefault();
+      const name = document.getElementById('fullname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      alert(`Thank you ${name}, your message has been received. We'll get back to you at ${email}.`);
+      document.querySelector('form').reset();
+    };
+  </script>
+</body>
+</html>

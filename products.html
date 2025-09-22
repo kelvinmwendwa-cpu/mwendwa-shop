@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Products – Mwendwa’s Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" class="brand">Mwendwa’s Shop</a>
+    <div class="links">
+      <a href="products.html">Products</a>
+      <a href="cart.html">Cart <span id="cart-badge">0</span></a>
+      <a href="register.html">Register</a>
+      <a href="checkout.html">Checkout</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2>All Products</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="assets/img/hoodie.jpg" alt="Hoodie">
+        <h3>Classic Hoodie</h3>
+        <p class="price">KES 1200</p>
+        <button class="btn btn-primary" onclick="addToCart({id:1, name:'Classic Hoodie', price:1200, qty:1, image:'hoodie.jpg'})">Add to cart</button>
+      </div>
+
+      <div class="card">
+        <img src="assets/img/sneakers.jpg" alt="Sneakers">
+        <h3>Urban Sneakers</h3>
+        <p class="price">KES 2500</p>
+        <button class="btn btn-primary" onclick="addToCart({id:2, name:'Urban Sneakers', price:2500, qty:1, image:'sneakers.jpg'})">Add to cart</button>
+      </div>
+
+      <div class="card">
+        <img src="assets/img/backpack.jpg" alt="Backpack">
+        <h3>Canvas Backpack</h3>
+        <p class="price">KES 1800</p>
+        <button class="btn btn-primary" onclick="addToCart({id:3, name:'Canvas Backpack', price:1800, qty:1, image:'backpack.jpg'})">Add to cart</button>
+      </div>
+
+      <div class="card">
+        <img src="assets/img/airtime.jpg" alt="Airtime">
+        <h3>Safaricom Airtime – KES 100</h3>
+        <p class="price">KES 100</p>
+        <button class="btn btn-primary" onclick="addToCart({id:4, name:'Safaricom Airtime', price:100, qty:1, image:'airtime.jpg'})">Add to cart</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Mwendwa’s Shop</small>
+  </footer>
+
+  <script type="module">
+    import { addToCart, updateCartBadge } from './assets/js/cart.js';
+    window.addToCart = addToCart;
+    updateCartBadge();
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

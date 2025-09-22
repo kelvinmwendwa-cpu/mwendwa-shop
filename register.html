@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Register – Mwendwa’s Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" class="brand">Mwendwa’s Shop</a>
+    <div class="links">
+      <a href="products.html">Products</a>
+      <a href="cart.html">Cart <span id="cart-badge">0</span></a>
+      <a href="register.html">Register</a>
+      <a href="checkout.html">Checkout</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2>Register to Start Shopping</h2>
+    <p>Please fill in your details to register.</p>
+
+    <form onsubmit="registerUser(event)">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="e.g. Kelvin Mwendwa" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="e.g. kelvin@example.com" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          placeholder="e.g. 0712345678 or +254712345678"
+          pattern="^(01|07)[0-9]{8}$|^(254|\+254)[0-9]{9}$"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="address">Delivery Address</label>
+        <input type="text" id="address" name="address" placeholder="e.g. Plot 12, Embu Town" required />
+      </div>
+
+      <div class="form-group">
+        <label for="county">County</label>
+        <select id="county" name="county" required>
+          <option value="">-- Select County --</option>
+          <option value="Embu">Embu</option>
+          <option value="Nairobi">Nairobi</option>
+          <option value="Mombasa">Mombasa</option>
+          <option value="Kiambu">Kiambu</option>
+          <option value="Machakos">Machakos</option>
+          <option value="Meru">Meru</option>
+          <option value="Nyeri">Nyeri</option>
+          <option value="Kisumu">Kisumu</option>
+          <option value="Uasin Gishu">Uasin Gishu</option>
+          <option value="Kakamega">Kakamega</option>
+          <!-- Add more counties as needed -->
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Mwendwa’s Shop</small>
+  </footer>
+
+  <script type="module">
+    import { updateCartBadge } from './assets/js/cart.js';
+    updateCartBadge();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', () => {
+      const value = phoneInput.value.trim();
+      const regex = /^(01|07)[0-9]{8}$|^(254|\+254)[0-9]{9}$/;
+      if (!regex.test(value)) {
+        phoneInput.setCustomValidity('Phone must start with 01, 07, 254 or +254 and be followed by the correct number of digits.');
+      } else {
+        phoneInput.setCustomValidity('');
+      }
+    });
+
+    window.registerUser = function (e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const county = document.getElementById('county').value;
+
+      localStorage.setItem('isRegistered', 'true');
+      localStorage.setItem('userName', name);
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userPhone', phone);
+      localStorage.setItem('userAddress', address);
+      localStorage.setItem('userCounty', county);
+
+      alert('Registration successful!');
+      window.location.href = 'products.html';
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cart – Mwendwa’s Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" class="brand">Mwendwa’s Shop</a>
+    <div class="links">
+      <a href="products.html">Products</a>
+      <a href="cart.html">Cart <span id="cart-badge">0</span></a>
+      <a href="register.html">Register</a>
+      <a href="checkout.html">Checkout</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2>Your Cart</h2>
+    <div id="cart-items" class="grid"></div>
+
+    <div id="cart-summary" style="margin-top: 30px;">
+      <p><strong>Total:</strong> KES <span id="cart-total">0</span></p>
+      <a href="checkout.html" class="btn btn-primary">Proceed to Checkout</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Mwendwa’s Shop</small>
+  </footer>
+
+  <script type="module">
+    import {
+      updateCartBadge,
+      getCartItems,
+      getCartTotal,
+      changeQty,
+      removeFromCart
+    } from './assets/js/cart.js';
+
+    updateCartBadge();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const container = document.getElementById('cart-items');
+    const totalEl = document.getElementById('cart-total');
+
+    function renderCart() {
+      const cart = getCartItems();
+      container.innerHTML = '';
+      let total = 0;
+
+      if (cart.length === 0) {
+        container.innerHTML = '<p>Your cart is empty.</p>';
+        document.getElementById('cart-summary').style.display = 'none';
+        return;
+      }
+
+      cart.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
+          <img src="assets/img/${item.image}" alt="${item.name}">
+          <h3>${item.name}</h3>
+          <p>Price: KES ${item.price}</p>
+          <p>Quantity: ${item.qty}</p>
+          <p>Total: KES ${item.price * item.qty}</p>
+          <div class="form-group">
+            <button class="btn" onclick="changeQty(${item.id}, 1)">➕</button>
+            <button class="btn" onclick="changeQty(${item.id}, -1)">➖</button>
+            <button class="btn btn-danger" onclick="removeFromCart(${item.id})">🗑️ Remove</button>
+          </div>
+        `;
+        container.appendChild(div);
+        total += item.price * item.qty;
+      });
+
+      totalEl.textContent = total;
+    }
+
+    window.changeQty = (id, delta) => {
+      changeQty(id, delta);
+      renderCart();
+    };
+
+    window.removeFromCart = (id) => {
+      removeFromCart(id);
+      renderCart();
+    };
+
+    renderCart();
+  </script>
+</body>
+</html>

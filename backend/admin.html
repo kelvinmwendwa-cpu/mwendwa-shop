@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f4f4f4; }
+    input, select { margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <h2>🧾 Mwendwa’s Shop – Admin Dashboard</h2>
+
+  <div>
+    <label>Phone: <input type="text" id="filterPhone" /></label>
+    <label>Min Amount: <input type="number" id="filterMinAmount" /></label>
+    <label>Max Amount: <input type="number" id="filterMaxAmount" /></label>
+    <label>Status:
+      <select id="filterStatus">
+        <option value="">All</option>
+        <option value="Paid">Paid</option>
+        <option value="Pending">Pending</option>
+      </select>
+    </label>
+    <button onclick="applyFilters()">Filter</button>
+  </div>
+
+  <table id="ordersTable">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Phone</th>
+        <th>Amount</th>
+        <th>Timestamp</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let allOrders = [];
+
+    fetch('http://localhost:8080/orders')
+      .then(res => res.json())
+      .then(data => {
+        allOrders = data;
+        renderTable(data);
+      });
+
+    function applyFilters() {
+      const phone = document.getElementById('filterPhone').value.trim();
+      const minAmount = parseFloat(document.getElementById('filterMinAmount').value);
+      const maxAmount = parseFloat(document.getElementById('filterMaxAmount').value);
+      const status = document.getElementById('filterStatus').value;
+
+      const filtered = allOrders.filter(order => {
+        return (!phone || order.phone.includes(phone)) &&
+               (!minAmount || order.amount >= minAmount) &&
+               (!maxAmount || order.amount <= maxAmount) &&
+               (!status || order.status === status);
+      });
+
+      renderTable(filtered);
+    }
+
+    function renderTable(orders) {
+      const tbody = document.querySelector('#ordersTable tbody');
+      tbody.innerHTML = '';
+      orders.forEach(order => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${order.orderId}</td>
+          <td>${order.phone}</td>
+          <td>KES ${order.amount}</td>
+          <td>${new Date(order.timestamp).toLocaleString()}</td>
+          <td>${order.status}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+  </script>
+</body>
+</html>

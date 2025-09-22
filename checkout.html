@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Checkout – Mwendwa’s Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" class="brand">Mwendwa’s Shop</a>
+    <div class="links">
+      <a href="products.html">Products</a>
+      <a href="cart.html">Cart <span id="cart-badge">0</span></a>
+      <a href="register.html">Register</a>
+      <a href="checkout.html">Checkout</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2>Confirm Payment</h2>
+    <p>Please enter your Safaricom number to complete payment.</p>
+
+    <div class="form-group">
+      <label for="phone">Phone Number</label>
+      <input type="text" id="phone" placeholder="e.g. 0712345678" />
+    </div>
+
+    <div class="form-group">
+      <label>Amount to Pay</label>
+      <p class="price">KES <span id="amount">...</span></p>
+    </div>
+
+    <button class="btn btn-primary" id="payBtn">Pay with M-Pesa</button>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Mwendwa’s Shop</small>
+  </footer>
+
+  <script type="module">
+    import { updateCartBadge, getCartTotal } from './assets/js/cart.js';
+    window.updateCartBadge = updateCartBadge;
+    updateCartBadge();
+
+    const amount = getCartTotal();
+    document.getElementById('amount').textContent = amount;
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const payBtn = document.getElementById('payBtn');
+    payBtn.onclick = () => {
+      const phone = document.getElementById('phone').value.trim();
+      const orderId = 'ORD' + Date.now();
+
+      if (!phone || amount <= 0) {
+        alert('Please enter a valid phone number and ensure your cart is not empty.');
+        return;
+      }
+
+      fetch('http://localhost:8080/pay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, amount, orderId })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok) {
+          window.location.href = `receipt.html?phone=${phone}&amount=${amount}&orderId=${orderId}`;
+        } else {
+          alert('Payment failed: ' + data.message);
+        }
+      })
+      .catch(err => {
+        alert('Error connecting to server.');
+        console.error(err);
+      });
+    };
+  </script>
+</body>
+</html>

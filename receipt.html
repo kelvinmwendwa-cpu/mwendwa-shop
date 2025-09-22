@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Receipt – Mwendwa’s Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="assets/css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" class="brand">Mwendwa’s Shop</a>
+    <div class="links">
+      <a href="products.html">Products</a>
+      <a href="cart.html">Cart <span id="cart-badge">0</span></a>
+      <a href="register.html">Register</a>
+      <a href="checkout.html">Checkout</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2>🧾 Payment Receipt</h2>
+    <p><strong>Order ID:</strong> <span id="orderId"></span></p>
+    <p><strong>Phone Number:</strong> <span id="phone"></span></p>
+    <p><strong>Amount Paid:</strong> KES <span id="amount"></span></p>
+    <p><strong>Status:</strong> Payment Successful</p>
+    <p><strong>Date:</strong> <span id="date"></span></p>
+
+    <button class="btn btn-primary" onclick="downloadReceipt()">Download Receipt</button>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Mwendwa’s Shop</small>
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const phone = params.get('phone');
+    const amount = params.get('amount');
+    const orderId = params.get('orderId');
+
+    document.getElementById('phone').textContent = phone;
+    document.getElementById('amount').textContent = amount;
+    document.getElementById('orderId').textContent = orderId;
+    document.getElementById('date').textContent = new Date().toLocaleString();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function downloadReceipt() {
+      const receipt = `
+        Mwendwa’s Shop Receipt
+        -----------------------
+        Order ID: ${orderId}
+        Phone Number: ${phone}
+        Amount Paid: KES ${amount}
+        Status: Payment Successful
+        Date: ${new Date().toLocaleString()}
+      `;
+      const blob = new Blob([receipt], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `Receipt_${orderId}.txt`;
+      link.click();
+    }
+  </script>
+</body>
+</html>

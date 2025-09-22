@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mwendwa’s Shop – Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="assets/css/styles.css" rel="stylesheet">
+  <style>
+    .slideshow {
+      width: 100%;
+      max-height: 300px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    .slides {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: auto;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" class="brand">Mwendwa’s Shop</a>
+    <div class="links">
+      <a href="products.html">Products</a>
+      <a href="cart.html">Cart <span id="cart-badge">0</span></a>
+      <a href="register.html">Register</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="customercare.html">Customer Care</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Slideshow Banner -->
+    <section class="slideshow">
+      <div class="slides">
+        <img src="assets/img/banner1.jpg" class="slide active" alt="Promo 1">
+        <img src="assets/img/banner2.jpg" class="slide" alt="Promo 2">
+        <img src="assets/img/banner3.jpg" class="slide" alt="Promo 3">
+      </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1>Welcome to Mwendwa’s Shop</h1>
+      <p>Your trusted online store for fashion, tech, and essentials — tailored for Kenya 🇰🇪</p>
+      <a href="products.html" class="btn btn-primary">Start Shopping</a>
+      <a href="customercare.html" class="btn" style="margin-left: 10px;">Customer Care</a>
+    </section>
+
+    <!-- Features -->
+    <section class="features" style="margin-top: 40px;">
+      <h2>Why Shop With Us?</h2>
+      <ul>
+        <li>✅ Fast M-Pesa Checkout</li>
+        <li>✅ Locally relevant products</li>
+        <li>✅ Affordable prices</li>
+        <li>✅ Reliable delivery</li>
+      </ul>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories" style="margin-top: 40px;">
+      <h2>Popular Categories</h2>
+      <div class="grid">
+        <div class="card">
+          <img src="assets/img/hoodie.jpg" alt="Fashion">
+          <h3>Fashion</h3>
+          <p>Stylish hoodies, sneakers, and more</p>
+          <a href="products.html" class="btn">Explore</a>
+        </div>
+        <div class="card">
+          <img src="assets/img/airtime.jpg" alt="Airtime">
+          <h3>Airtime</h3>
+          <p>Instant Safaricom top-ups</p>
+          <a href="products.html" class="btn">Buy Now</a>
+        </div>
+        <div class="card">
+          <img src="assets/img/backpack.jpg" alt="Accessories">
+          <h3>Accessories</h3>
+          <p>Backpacks, bags, and daily gear</p>
+          <a href="products.html" class="btn">Shop</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Mwendwa’s Shop</small>
+  </footer>
+
+  <script type="module">
+    import { updateCartBadge } from './assets/js/cart.js';
+    updateCartBadge();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const name = localStorage.getItem('userName');
+    if (name) {
+      document.querySelector('.hero').insertAdjacentHTML('beforeend', `<p>Welcome back, ${name}!</p>`);
+    }
+
+    // Slideshow logic
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+    }
+    setInterval(() => {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }, 4000);
+  </script>
+</body>
+</html>
